@@ -1,26 +1,347 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>grind-calculator-pal</title>
-    <meta name="description" content="Lovable Generated Project" />
+    <title>Кофемолка Калькулятор</title>
+    <meta name="description" content="Coffee Grinder Calculator" />
     <meta name="author" content="Lovable" />
 
-    <meta property="og:title" content="grind-calculator-pal" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:title" content="Кофемолка Калькулятор" />
+    <meta property="og:description" content="Coffee Grinder Calculator" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <style>
+      :root {
+        --coffee-dark: #3c2a21;
+        --coffee-medium: #967259;
+        --coffee-light: #dfccbe;
+        --white: #ffffff;
+        --background: #faf7f2;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--background);
+        color: var(--coffee-dark);
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background-color: var(--coffee-dark);
+        color: var(--white);
+        padding: 1rem;
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.8rem;
+      }
+
+      main {
+        padding: 2rem 0;
+      }
+
+      .calculator-container {
+        background-color: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .grinder-section {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        border: 1px solid var(--coffee-light);
+        border-radius: 6px;
+        transition: transform 0.2s ease;
+      }
+
+      .grinder-section:hover {
+        transform: scale(1.02);
+      }
+
+      h2 {
+        margin-top: 0;
+        color: var(--coffee-medium);
+        font-size: 1.4rem;
+      }
+
+      .input-group {
+        margin-bottom: 1rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      input {
+        padding: 0.75rem;
+        width: 100%;
+        border: 1px solid var(--coffee-light);
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+      input:focus {
+        outline: 2px solid var(--coffee-medium);
+      }
+
+      .range-info {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem 0;
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .github-link {
+        color: var(--coffee-medium);
+        text-decoration: none;
+      }
+
+      .github-link:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
+    <header>
+      <div class="container">
+        <h1>Кофемолка Калькулятор</h1>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="calculator-container">
+          <div class="grinder-section">
+            <h2>C3 ESP (щелчки)</h2>
+            <div class="input-group">
+              <label for="c3esp-clicks">Настройка щелчков:</label>
+              <input
+                type="number"
+                id="c3esp-clicks"
+                min="0"
+                max="90"
+                value="36"
+              />
+              <div class="range-info">Диапазон: 0-90 щелчков</div>
+            </div>
+          </div>
+
+          <div class="grinder-section">
+            <h2>1zpresso ZP6 (щелчки)</h2>
+            <div class="input-group">
+              <label for="zp6-clicks">Настройка щелчков:</label>
+              <input
+                type="number"
+                id="zp6-clicks"
+                min="0"
+                max="130"
+                value="31"
+              />
+              <div class="range-info">Диапазон: 0-130 щелчков</div>
+            </div>
+          </div>
+
+          <div class="grinder-section">
+            <h2>Настройка в микронах</h2>
+            <div class="input-group">
+              <label for="microns">Значение в микронах:</label>
+              <input
+                type="number"
+                id="microns"
+                min="200"
+                max="1200"
+                value="600"
+              />
+              <div class="range-info">Диапазон: 200-1200 микрон</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© <span id="current-year"></span> Кофемолка Калькулятор</p>
+        <a class="github-link" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </footer>
+
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Grinder calibration data
+      const GRINDER_DATA = {
+        c3esp: {
+          range: { min: 0, max: 90 },
+          calibration: [
+            { clicks: 36, microns: 400 },
+            { clicks: 54, microns: 600 }
+          ]
+        },
+        zp6: {
+          range: { min: 0, max: 130 },
+          calibration: [
+            { clicks: 31, microns: 600 },
+            { clicks: 55, microns: 800 }
+          ]
+        }
+      };
+
+      // Linear interpolation function
+      function linearInterpolation(x, x0, y0, x1, y1) {
+        const slope = (y1 - y0) / (x1 - x0);
+        return y0 + slope * (x - x0);
+      }
+
+      // Convert from C3 ESP clicks to microns
+      function c3espToMicrons(clicks) {
+        const { calibration } = GRINDER_DATA.c3esp;
+        return linearInterpolation(
+          clicks,
+          calibration[0].clicks,
+          calibration[0].microns,
+          calibration[1].clicks,
+          calibration[1].microns
+        );
+      }
+
+      // Convert from ZP6 clicks to microns
+      function zp6ToMicrons(clicks) {
+        const { calibration } = GRINDER_DATA.zp6;
+        return linearInterpolation(
+          clicks,
+          calibration[0].clicks,
+          calibration[0].microns,
+          calibration[1].clicks,
+          calibration[1].microns
+        );
+      }
+
+      // Convert from microns to C3 ESP clicks
+      function micronsToC3esp(microns) {
+        const { calibration } = GRINDER_DATA.c3esp;
+        return linearInterpolation(
+          microns,
+          calibration[0].microns,
+          calibration[0].clicks,
+          calibration[1].microns,
+          calibration[1].clicks
+        );
+      }
+
+      // Convert from microns to ZP6 clicks
+      function micronsToZp6(microns) {
+        const { calibration } = GRINDER_DATA.zp6;
+        return linearInterpolation(
+          microns,
+          calibration[0].microns,
+          calibration[0].clicks,
+          calibration[1].microns,
+          calibration[1].clicks
+        );
+      }
+
+      // Range validation helpers
+      function validateC3espClicks(clicks) {
+        const { min, max } = GRINDER_DATA.c3esp.range;
+        return Math.max(min, Math.min(clicks, max));
+      }
+
+      function validateZp6Clicks(clicks) {
+        const { min, max } = GRINDER_DATA.zp6.range;
+        return Math.max(min, Math.min(clicks, max));
+      }
+
+      function validateMicrons(microns) {
+        // Based on our calibration data, reasonable coffee grinding range
+        const min = 200;
+        const max = 1200;
+        return Math.max(min, Math.min(microns, max));
+      }
+
+      // Format numbers to have at most 1 decimal place
+      function formatNumber(num) {
+        return Number(num.toFixed(1)).toString();
+      }
+
+      // DOM elements
+      const c3espInput = document.getElementById('c3esp-clicks');
+      const zp6Input = document.getElementById('zp6-clicks');
+      const micronsInput = document.getElementById('microns');
+      const yearElement = document.getElementById('current-year');
+
+      // Set current year in footer
+      yearElement.textContent = new Date().getFullYear();
+
+      // Initialize values
+      updateFromC3esp();
+
+      // Add event listeners
+      c3espInput.addEventListener('input', updateFromC3esp);
+      zp6Input.addEventListener('input', updateFromZp6);
+      micronsInput.addEventListener('input', updateFromMicrons);
+
+      // Update functions
+      function updateFromC3esp() {
+        const clicks = validateC3espClicks(parseFloat(c3espInput.value) || 0);
+        c3espInput.value = clicks;
+        
+        const microns = c3espToMicrons(clicks);
+        micronsInput.value = formatNumber(microns);
+        
+        const zp6Clicks = micronsToZp6(microns);
+        zp6Input.value = formatNumber(zp6Clicks);
+      }
+
+      function updateFromZp6() {
+        const clicks = validateZp6Clicks(parseFloat(zp6Input.value) || 0);
+        zp6Input.value = clicks;
+        
+        const microns = zp6ToMicrons(clicks);
+        micronsInput.value = formatNumber(microns);
+        
+        const c3espClicks = micronsToC3esp(microns);
+        c3espInput.value = formatNumber(c3espClicks);
+      }
+
+      function updateFromMicrons() {
+        const microns = validateMicrons(parseFloat(micronsInput.value) || 0);
+        micronsInput.value = formatNumber(microns);
+        
+        const c3espClicks = micronsToC3esp(microns);
+        c3espInput.value = formatNumber(c3espClicks);
+        
+        const zp6Clicks = micronsToZp6(microns);
+        zp6Input.value = formatNumber(zp6Clicks);
+      }
+    </script>
   </body>
 </html>
